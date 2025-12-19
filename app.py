@@ -19,4 +19,5 @@ metodo = st.selectbox(
     ["Método volumétrico", "Método analítico", "Comparar ambos"]
 )
 
-st.subheader("D
+st.subheader("Datos comunes")
+

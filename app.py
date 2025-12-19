@@ -110,8 +110,14 @@ if st.button("Calcular caudal"):
     st.subheader("📋 Resumen de resultados")
     st.dataframe(df)
 
-    st.download_button(
-        label="📥 Descargar resultados en Excel",
-        data=df.to_excel(index=False),
-        file_name="resultados_molino_hidraulico.xlsx"
-    )
+    buffer = BytesIO()
+df.to_excel(buffer, index=False)
+buffer.seek(0)
+
+st.download_button(
+    label="📥 Descargar resultados en Excel",
+    data=buffer,
+    file_name="resultados_molino_hidraulico.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+

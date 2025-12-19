@@ -1,6 +1,7 @@
 import streamlit as st
 import math
 import pandas as pd
+from io import BytesIO
 
 # =============================
 # CONFIGURACIÓN DE PÁGINA

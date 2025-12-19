@@ -116,19 +116,16 @@ buffer = io.BytesIO()
 df.to_excel(buffer, index=False)
 buffer.seek(0)
 
-st.download_button(
-    label="📥 Descargar resultados en Excel",
-    data=buffer,
-    file_name="resultados_molino_hidraulico.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
-
+buffer = io.BytesIO()
+df.to_excel(buffer, index=False)
 buffer.seek(0)
 
 st.download_button(
     label="📥 Descargar resultados en Excel",
     data=buffer,
     file_name="resultados_molino_hidraulico.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    key="download_excel_molino"
 )
+
 

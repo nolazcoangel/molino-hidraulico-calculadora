@@ -1,7 +1,7 @@
 import streamlit as st
 import math
 import pandas as pd
-from io import BytesIO
+from io 
 
 # =============================
 # CONFIGURACIÓN DE PÁGINA
@@ -111,7 +111,17 @@ if st.button("Calcular caudal"):
     st.dataframe(df)
 
     buffer = BytesIO()
+buffer = io.BytesIO()
 df.to_excel(buffer, index=False)
+buffer.seek(0)
+
+st.download_button(
+    label="📥 Descargar resultados en Excel",
+    data=buffer,
+    file_name="resultados_molino_hidraulico.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+
 buffer.seek(0)
 
 st.download_button(

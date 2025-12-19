@@ -111,7 +111,7 @@ if st.button("Calcular caudal"):
     st.subheader("📋 Resumen de resultados")
     st.dataframe(df)
 
-    buffer = BytesIO()
+    
 buffer = io.BytesIO()
 df.to_excel(buffer, index=False)
 buffer.seek(0)

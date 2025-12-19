@@ -3,7 +3,6 @@ import math
 import pandas as pd
 import io
 
-
 # =============================
 # CONFIGURACIÓN DE PÁGINA
 # =============================
@@ -46,17 +45,10 @@ tiempo_recoleccion = st.number_input(
     value=12.0
 )
 
-# Conversión a m³
-volumen_m3 = volumen_L / 1000
+volumen_m3 = volumen_L / 1000  # conversión
 
 # =============================
-# MÉTODO VOLUMÉTRICO
-# =============================
-if metodo in ["Método volumétrico", "Comparar ambos"]:
-    Q1 = volumen_m3 / tiempo_recoleccion
-
-# =============================
-# MÉTODO ANALÍTICO
+# MÉTODO ANALÍTICO (DATOS)
 # =============================
 if metodo in ["Método analítico", "Comparar ambos"]:
     st.subheader("📐 Datos del método analítico")
@@ -79,10 +71,6 @@ if metodo in ["Método analítico", "Comparar ambos"]:
         value=0.9
     )
 
-    area = math.pi * (diametro / 2) ** 2
-    velocidad = longitud / tiempo_flujo
-    Q2 = area * velocidad
-
 # =============================
 # RESULTADOS
 # =============================
@@ -92,12 +80,19 @@ st.header("📊 Resultados")
 if st.button("Calcular caudal"):
     datos = []
 
+    # MÉTODO VOLUMÉTRICO
     if metodo in ["Método volumétrico", "Comparar ambos"]:
+        Q1 = volumen_m3 / tiempo_recoleccion
         st.subheader("🔹 Método volumétrico")
         st.write(f"Caudal Q₁ = **{Q1:.5e} m³/s**")
         datos.append(["Volumétrico", Q1])
 
+    # MÉTODO ANALÍTICO
     if metodo in ["Método analítico", "Comparar ambos"]:
+        area = math.pi * (diametro / 2) ** 2
+        velocidad = longitud / tiempo_flujo
+        Q2 = area * velocidad
+
         st.subheader("🔹 Método analítico")
         st.write(f"Área = {area:.5e} m²")
         st.write(f"Velocidad = {velocidad:.2f} m/s")
@@ -105,27 +100,26 @@ if st.button("Calcular caudal"):
         datos.append(["Analítico", Q2])
 
     # =============================
-    # TABLA Y EXPORTACIÓN
+    # TABLA
     # =============================
     df = pd.DataFrame(datos, columns=["Método", "Caudal (m³/s)"])
     st.subheader("📋 Resumen de resultados")
     st.dataframe(df)
 
-    
-buffer = io.BytesIO()
-df.to_excel(buffer, index=False)
-buffer.seek(0)
+    # =============================
+    # EXPORTAR A EXCEL
+    # =============================
+    buffer = io.BytesIO()
+    df.to_excel(buffer, index=False)
+    buffer.seek(0)
 
-buffer = io.BytesIO()
-df.to_excel(buffer, index=False)
-buffer.seek(0)
+    st.download_button(
+        label="📥 Descargar resultados en Excel",
+        data=buffer,
+        file_name="resultados_molino_hidraulico.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key="download_excel_molino"
+    )
 
-st.download_button(
-    label="📥 Descargar resultados en Excel",
-    data=buffer,
-    file_name="resultados_molino_hidraulico.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    key="download_excel_molino"
-)
 
 
